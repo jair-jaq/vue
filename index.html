@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <style>
+            canvas{
+                background-color: gray;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas"></canvas>
+        <script>
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = "#F96646";
+            ctx.fillRect (10, 10, 55, 50);
+
+            ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+            ctx.fillRect (30, 30, 55, 50);
+
+            ctx.strokeStyle = "red";
+
+            ctx.beginPath();
+            ctx.moveTo(185,10);
+            ctx.lineTo(222,65); 
+            ctx.lineTo(125,65);
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+
+            ctx.moveTo(222,65);
+            ctx.lineTo(272,125);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.fillStyle = "green";
+
+            ctx.beginPath();
+            ctx.arc(135, 110, 22, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(185, 110, 22, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+        </script>
+    </body>
+</html>
