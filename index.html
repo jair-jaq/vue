@@ -2,17 +2,84 @@
     <head>
         <style>
             canvas{
-                background-color: gray;
+                background-color: white;
+            }
+            body{
+                background-color: black;
             }
         </style>
     </head>
     <body>
-        <canvas id="myCanvas"></canvas>
+        <center>
+            <canvas width="500" height="500" id="myCanvas"></canvas>
+        </center>
+
+        <img style="display: none;" src="como.png" id="my_image" alt="">
+
         <script>
             var canvas = document.getElementById('myCanvas');
             var ctx = canvas.getContext('2d');
+            var color = "rgba(13,242,23,0.5)";
+            var figura = true;
+            var press = false;
 
-            ctx.fillStyle = "#F96646";
+            ctx.fillStyle = color;
+ 
+            canvas.addEventListener("click", (e) => {
+
+                if (figura){ 
+                
+                    ctx.beginPath();
+                    ctx.arc(e.layerX, e.layerY, 50, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }else{
+
+                    ctx.fillRect (e.layerX-50, e.layerY-50, 100, 100);
+                    ctx.strokeRect (e.layerX-50, e.layerY-50, 100, 100);
+                }
+            })
+
+            canvas.addEventListener("mouseover", (e)=> {
+
+                console.log("mouseover")
+
+                color = random_rgba();
+                ctx.fillStyle = color;
+            })
+
+            canvas.addEventListener('mouseout', (e)=>{
+
+                figura = !figura; 
+                
+            })
+
+            canvas.addEventListener("mousemove", (e)=>{
+                console.log("mousemove")
+
+                if(press){ 
+               
+                    ctx.beginPath();
+                    ctx.arc(e.layerX, e.layerY, 2, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            })
+
+            canvas.addEventListener("mousedown", (e)=>{
+                press = true;
+            })
+
+            canvas.addEventListener("mouseup", (e)=>{
+                press = false;
+            })
+
+            function random_rgba() {
+                var o = Math.round, r = Math.random, s = 255;
+                return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+            }
+
+            /*ctx.fillStyle = "#F96646";
             ctx.fillRect (10, 10, 55, 50);
 
             ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
@@ -44,7 +111,32 @@
             ctx.beginPath();
             ctx.arc(185, 110, 22, 0, 2 * Math.PI);
             ctx.stroke();
+
+            ctx.fillStyle = "white";
+            ctx.font = "40px Arial"
+            ctx.fillText("Hola mundo",250,40);
+
+            ctx.strokeStyle = "green";
+            ctx.strokeText("Hola mundo",252,42);
             
+            var grd = ctx.createLinearGradient(140,170,200,100);
+            grd.addColorStop(0,"#F24B0D");
+            grd.addColorStop(0.1,"#F20DE1");
+            grd.addColorStop(1,"#29F20D");
+
+            ctx.fillStyle = grd;
+            ctx.fillRect(140,170,200,100);
+
+            var grd2 = ctx.createRadialGradient(240, 320, 5, 255, 340, 100);
+            grd2.addColorStop(0,"#F24B0D");
+            grd2.addColorStop(0.5,"#F20DE1");
+            grd2.addColorStop(1,"#29F20D");
+
+            ctx.fillStyle = grd2;
+            ctx.fillRect(140,270,200,100)
+
+            var img = document.getElementById("my_image")
+            ctx.drawImage(img,340,70,80,80)*/
         </script>
     </body>
 </html>
