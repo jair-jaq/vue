@@ -19,7 +19,46 @@
         <script>
             var canvas = document.getElementById('myCanvas');
             var ctx = canvas.getContext('2d');
-            var color = "rgba(13,242,23,0.5)";
+            var x = 225, y = 225;
+            
+            document.addEventListener("keydown", (e) =>{
+
+                console.log(e) 
+
+                switch(e.keyCode)
+                {
+                    case 87:
+                        y -= 10;
+                    break;
+                    case 83:
+                        y += 10;
+                    break;
+                    case 68:
+                        x += 10;
+                    break;
+                    case 65:
+                        x -= 10;
+                    break;
+
+                } 
+
+                
+                repaint();
+
+            })
+
+            function repaint()
+            {
+
+                ctx.fillStyle = "white";
+                ctx.fillRect (0, 0, 500, 500);
+
+                ctx.fillStyle = random_rgba();
+                ctx.fillRect (x, y, 50, 50);
+                ctx.strokeRect (x, y, 50, 50);
+            }  
+
+            /*var color = "rgba(13,242,23,0.5)";
             var figura = true;
             var press = false;
 
@@ -73,6 +112,8 @@
             canvas.addEventListener("mouseup", (e)=>{
                 press = false;
             })
+
+            */
 
             function random_rgba() {
                 var o = Math.round, r = Math.random, s = 255;
