@@ -22,7 +22,7 @@
 
         <br>
          
-        <button @click="count++">
+        <button @click="count++"  >
             Count is: {{ count }}
         </button>
 
@@ -39,6 +39,36 @@
             Resultado <span v-if="result!=0"> {{ result }} </span>
         </h3>
 
+        <hr>
+
+        <ul> 
+            <li v-for="item in persons">
+                {{ item.name }} - {{ item.lastname }}
+            </li> 
+        </ul>
+
+        <form>  
+
+            <fieldset>
+                <legend>
+                    Nombre(s):
+                </legend>
+                <input type="text" v-model="username" name="">
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Apellido(s):
+                </legend>
+                <input type="text" v-model="lastname" name="">
+            </fieldset>
+
+
+            <button type="button" v-on:click="addPerson">
+                Save data
+            </button>
+        </form>
+
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -49,17 +79,32 @@
             setup(){ 
                 const message = "";
                 const name = "";
-                const num1 = 0;
-                const num2 = 0;
-                const result = 0;
+                const num1 = 0,  num2 = 0, result = 0;
+                const username = ref(''), lastname = ref('');
+                const persons = ref([]);
 
                 return {
                     name: ref(''),
                     count: ref(0),
                     num1: ref(0),
                     num2: ref(0),
-                    result: ref(0)
+                    result: ref(0),
+                    username,
+                    lastname,
+                    persons
 
+                }
+            },
+            methods:{
+                addPerson(){
+
+                    const person = {
+                        name:this.username, 
+                        lastname:this.lastname
+                    } 
+
+                    this.persons.push(person)
+                     
                 }
             }
         }).mount('#container_app')
