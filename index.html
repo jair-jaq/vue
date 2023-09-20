@@ -16,7 +16,29 @@
 
     <div class="container" id="container_app">
         
-        <h1> hola {{ name }}</h1> 
+        <form>
+            
+            <fieldset>
+                <legend>
+                    Email:
+                </legend>
+                <input v-model="email" type="email" placeholder="write here" name="">
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Password:
+                </legend>
+                <input v-model="password" type="password" placeholder="Write here" name="">
+            </fieldset>
+
+            <button @click="login" type="button">
+                Access
+            </button>
+
+        </form>
+
+        <!-- <h1> hola {{ name }}</h1> 
 
         <input type="text" v-model="name" name=""> 
 
@@ -67,13 +89,59 @@
             <button type="button" v-on:click="addPerson">
                 Save data
             </button>
-        </form>
+        </form> -->
 
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="text/javascript">
+
         const { createApp, ref } = Vue
+
+        createApp({
+            setup(){  
+                users = ref([]);
+                email = ref(''); password = ref('');
+
+                return { 
+                    users,
+                        email,
+                        password
+                }
+            },
+            methods:{
+                async login(){ 
+
+                    //1.- traer los datos
+                    const response = await fetch("users.json"); 
+                    const users = await response.json(); 
+
+                    let login = false;
+
+                    //2.- recorrer los datos
+                    users.forEach((user) => {
+
+                        //3.- comprobar si el usuario existe 
+
+                            if (this.email == user.email) {
+                                if (this.password == user.password) { 
+                                    alert("Bienvenido")
+                                    login = true;
+
+                                }
+                            }
+
+                        }   
+                    );
+
+                    if (!login) {
+                        alert("Verifique su información")
+                    }
+                }
+            }
+        }).mount('#container_app')
+        
+        /*const { createApp, ref } = Vue
 
         createApp({
             setup(){ 
@@ -107,7 +175,7 @@
                      
                 }
             }
-        }).mount('#container_app')
+        }).mount('#container_app')*/
 
     </script>
 </body>
