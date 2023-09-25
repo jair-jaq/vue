@@ -10,13 +10,34 @@
         body{
             background-color: gray;
         }
+        table.customTable {
+          width: 100%;
+          background-color: #FFFFFF;
+          border-collapse: collapse;
+          border-width: 2px;
+          border-color: #7ea8f8;
+          border-style: solid;
+          color: #000000;
+        }
+
+        table.customTable td, table.customTable th {
+          border-width: 2px;
+          border-color: #7ea8f8;
+          border-style: solid;
+          padding: 5px;
+        }
+
+        table.customTable thead {
+          background-color: #7ea8f8;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container" id="container_app">
         
-        <form>
+        <form v-if="!is_login">
             
             <fieldset>
                 <legend>
@@ -37,6 +58,41 @@
             </button>
 
         </form>
+
+        
+        <table class="customTable" v-if="is_login">
+          <thead>
+            <tr>
+              <th>
+                  Personal data
+              </th>
+              <th>
+                  Contact data
+              </th>
+              <th>
+                  Company data
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr v-for="u in users">
+              <td>
+                  {{ u.name }}, {{ u.username }}
+              </td>
+              <td>
+                  {{ u.email }}, {{ u.phone }}
+              </td>
+              <td>
+                  {{ u.company.name }}, {{ u.company.bs }}
+              </td>
+            </tr>
+             
+          </tbody>
+        </table>
+        <!-- Generated at CSSPortal.com -->
+
+
 
         <!-- <h1> hola {{ name }}</h1> 
 
@@ -101,40 +157,68 @@
         createApp({
             setup(){  
                 users = ref([]);
-                email = ref(''); password = ref('');
+                email = ref('Sincere@april.biz'); password = ref('1234'); 
+                
+                let tmp = localStorage.getItem("is_login");
+                if (tmp == null) {
+                    tmp = false
+                }
+
+                is_login = ref(tmp)    
 
                 return { 
                     users,
-                        email,
-                        password
+                    email,
+                    password,
+                    is_login
                 }
+            },
+            mounted: function () {
+                
+                const getUsers = async () => {
+                  
+                    const response = await fetch("users.json?v=1.1"); 
+                    const tmp_users = await response.json();  
+                    
+                    this.users = tmp_users;
+                } 
+
+                if (this.is_login) {
+                    getUsers() 
+                }
+                
             },
             methods:{
                 async login(){ 
 
                     //1.- traer los datos
-                    const response = await fetch("users.json"); 
-                    const users = await response.json(); 
+                    const response = await fetch("users.json?v=1.1"); 
+                    this.users = await response.json(); 
 
-                    let login = false;
+                    this.is_login = false;
 
                     //2.- recorrer los datos
-                    users.forEach((user) => {
+                    this.users.forEach((user) => {
 
                         //3.- comprobar si el usuario existe 
 
                             if (this.email == user.email) {
-                                if (this.password == user.password) { 
+                                if (this.password == user.password) {  
+                                    this.is_login = true;
                                     alert("Bienvenido")
-                                    login = true;
 
+                                    //this.update(users)
+
+                                    localStorage.setItem("user_data", JSON.stringify(user));
+
+                                    localStorage.setItem("is_login","true");
                                 }
                             }
 
                         }   
                     );
 
-                    if (!login) {
+                    if (!this.is_login) {
                         alert("Verifique su información")
                     }
                 }
